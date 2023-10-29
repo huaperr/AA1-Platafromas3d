@@ -35,6 +35,7 @@ public class Pmovement : MonoBehaviour
 
     void Update()
     {
+        /*
          //Gravedad
 
         // Obtén la dirección de movimiento desde las entradas de teclado o joystick
@@ -70,13 +71,18 @@ public class Pmovement : MonoBehaviour
         {
             speed = baseSpeed;
         }
+        */
+       
 
+    }
+
+    private void FixedUpdate()
+    {
         if (Input.GetKeyDown(KeyCode.Space) && jumps > 0)
         {
-            rb.AddForce(Vector3.up * 100, ForceMode.Impulse);
+            rb.AddForce(new Vector2(0, 100), ForceMode.Impulse);
             jumps--;
         }
-
     }
 
     private void OnCollisionEnter(Collision collision)
