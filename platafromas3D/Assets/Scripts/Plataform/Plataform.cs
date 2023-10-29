@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class Plataform : MonoBehaviour
 {
-    //Con character controller funcioanaba mal
-    private Rigidbody rb;
-    private float y;
-    private float z = 50000000000000;
+    private float jumpForce = 10f; // Ajusta este valor según tus necesidades
+
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.tag == "Player")
+        if (collision.collider.CompareTag("Player"))
         {
-            rb.AddForce(0, y, z);
+            Rigidbody rb = collision.gameObject.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                Debug.Log("maricon");
+                rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+
+            }
         }
     }
 }

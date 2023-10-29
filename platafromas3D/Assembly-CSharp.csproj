@@ -66,6 +66,7 @@
     <Compile Include="Assets\Scripts\Player\P_cappy.cs" />
     <Compile Include="Assets\Scripts\Player\Pmovement.cs" />
     <Compile Include="Assets\Scripts\coin\c_collision.cs" />
+    <Compile Include="Assets\Scripts\Player\Animator_Manager.cs" />
     <Compile Include="Assets\Scripts\coin\c_rotation.cs" />
     <Compile Include="Assets\Scripts\Player\P_attack.cs" />
   </ItemGroup>
