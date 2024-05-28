@@ -5,13 +5,14 @@ using UnityEngine.EventSystems;
 
 public class Pmovement : MonoBehaviour
 {
+    public static Pmovement Instance;
+
 
     public Camera mainCamera;
 
     private float speed = 5.0f;
     private float crouchSpeed = 2.5f;
     private float baseSpeed = 5f;
-    private float maxSpeed = 10f;
     public float runSpeedMultiplier = 2f;
 
     private float rotation = 50.0f;
@@ -20,12 +21,18 @@ public class Pmovement : MonoBehaviour
     private float jumps = 0f;
     public float jumpForce = 5f;
 
-    private Vector3 moveDirection = Vector3.zero;
+    public Vector3 moveDirection = Vector3.zero;
     private CharacterController controller;
     private float gravity = 20.0f;
 
     void Start()
     {
+        if(Instance == null)
+            Instance = this;
+        else
+        {
+            Destroy(this);
+        }
         controller = GetComponent<CharacterController>();
         jumps = maxJumps;
     }
