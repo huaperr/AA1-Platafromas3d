@@ -15,31 +15,23 @@ public class P_collision : MonoBehaviour
             SceneManager.LoadScene("Victory");
         }
     }
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (collision.collider.tag == "enemy")
+        if (hit.collider.tag == "enemy")
         {
             Destroy(gameObject);
             SceneManager.LoadScene("SampleScene");
         }
 
-        if (collision.collider.tag == "Player")
+        if (hit.collider.tag == "Player")
         {
             player.AddForce(0, y, z);
         }
 
-        if (collision.collider.tag == "cappy")
+        if (hit.collider.tag == "cappy")
         {
             player.AddForce(0, y, z);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "coin")
-        {
-            coin_count -= 1;
-
         }
     }
 }

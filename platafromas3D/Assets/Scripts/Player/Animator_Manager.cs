@@ -6,26 +6,29 @@ public class Animator_Manager : MonoBehaviour
 {
 
     private Animator animator;
-    private Rigidbody rb;
+    private CharacterController controller;
+
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float aux = (rb.velocity.z + rb.velocity.x) / 10;
-        
-        if(aux < 0 ) 
-        {
-            aux *= -1;
-        }
-        animator.SetFloat("Blend", aux);
-        animator.SetFloat("Jump", rb.velocity.y);
+        float totalSpeed = (controller.velocity.magnitude) / 10;
 
+
+        if (totalSpeed < 0)
+        {
+            totalSpeed *= -1;
+        }
+
+        animator.SetFloat("Blend", totalSpeed);
+
+        animator.SetFloat("Jump", controller.velocity.y);
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
@@ -35,7 +38,5 @@ public class Animator_Manager : MonoBehaviour
         {
             animator.SetBool("crounched", false);
         }
-
-        
     }
 }

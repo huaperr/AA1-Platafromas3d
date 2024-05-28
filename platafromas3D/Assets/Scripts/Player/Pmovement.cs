@@ -7,12 +7,12 @@ public class Pmovement : MonoBehaviour
 {
 
     public Camera mainCamera;
-        
+
     private float speed = 5.0f;
     private float crouchSpeed = 2.5f;
     private float baseSpeed = 5f;
     private float maxSpeed = 10f;
-    public float runSpeedMultiplier = 5f;
+    public float runSpeedMultiplier = 2f;
 
     private float rotation = 50.0f;
 
@@ -20,18 +20,18 @@ public class Pmovement : MonoBehaviour
     private float jumps = 0f;
     public float jumpForce = 5f;
 
-
-    private Rigidbody rb;
+    private Vector3 moveDirection = Vector3.zero;
+    private CharacterController controller;
+    private float gravity = 20.0f;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
         jumps = maxJumps;
     }
 
     void Update()
     {
-
         // Obtén la dirección de movimiento desde las entradas de teclado o joystick
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
@@ -47,14 +47,29 @@ public class Pmovement : MonoBehaviour
 
         Vector3 movement = forward * moveVertical + right * moveHorizontal;
 
-        // Aplica el movimiento al Rigidbody
-        rb.velocity = new Vector3(movement.x * speed, rb.velocity.y, movement.z * speed);
+        // Mueve el CharacterController
+        if (controller.isGrounded)
+        {
+            moveDirection = movement * speed;
+
+            if (Input.GetButtonDown("Jump") && jumps > 0)
+            {
+                moveDirection.y = jumpForce;
+                jumps--;
+            }
+        }
+
+        // Aplica la gravedad manualmente
+        moveDirection.y -= gravity * Time.deltaTime;
+
+        // Mueve el CharacterController
+        controller.Move(moveDirection * Time.deltaTime);
 
         // Gira el objeto hacia la dirección de movimiento
         if (movement != Vector3.zero)
         {
             Quaternion nuevaRotacion = Quaternion.LookRotation(movement);
-            transform.rotation = Quaternion.Slerp(rb.rotation, nuevaRotacion, rotation * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, nuevaRotacion, rotation * Time.deltaTime);
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -66,32 +81,24 @@ public class Pmovement : MonoBehaviour
             speed = baseSpeed;
         }
 
-        if(Input.GetKeyDown(KeyCode.LeftControl)) 
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             speed = crouchSpeed;
         }
 
-        if(Input.GetKeyUp(KeyCode.LeftControl))
+        if (Input.GetKeyUp(KeyCode.LeftControl))
         {
             speed = baseSpeed;
         }
-        
-
-        if (Input.GetButtonDown("Jump") && jumps > 0)
-        {
-            rb.AddForce(new Vector2(0, 10), ForceMode.Impulse);
-            Debug.Log(jumps);
-            jumps--;
-        }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if(collision.collider.tag == "floor")
+        if (hit.collider.tag == "floor")
         {
             jumps = maxJumps;
         }
-        if(collision.collider.tag == "wall")
+        if (hit.collider.tag == "wall")
         {
             jumps += 1;
         }
