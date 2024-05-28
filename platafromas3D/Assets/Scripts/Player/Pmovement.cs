@@ -88,7 +88,7 @@ public class Pmovement : MonoBehaviour
             speed = baseSpeed;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKey(KeyCode.LeftControl))
         {
             speed = crouchSpeed;
         }

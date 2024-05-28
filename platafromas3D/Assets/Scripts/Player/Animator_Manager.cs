@@ -30,7 +30,7 @@ public class Animator_Manager : MonoBehaviour
 
         animator.SetFloat("Jump", controller.velocity.y);
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKey(KeyCode.LeftControl))
         {
             animator.SetBool("crounched", true);
         }
